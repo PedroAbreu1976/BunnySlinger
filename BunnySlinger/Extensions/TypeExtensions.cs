@@ -51,5 +51,25 @@ namespace BunnySlinger.Extensions
             }
             return result;
         }
+
+        public static List<Type> GetInterceptorTypes(this Assembly assembly)
+        {
+	        var messageTypes = assembly
+		        .GetTypes()
+		        .Where(t => t is { IsClass: true, IsAbstract: false } && typeof(IBunnyInterceptor).IsAssignableFrom(t))
+		        .ToList();
+	        return messageTypes;
+        }
+
+        public static List<Type> GetInterceptorTypes(this IEnumerable<Assembly> assemblies)
+        {
+	        var result = new List<Type>();
+	        foreach (var assembly in assemblies)
+	        {
+		        var messageTypes = assembly.GetInterceptorTypes();
+		        result.AddRange(messageTypes);
+	        }
+	        return result;
+        }
     }
 }

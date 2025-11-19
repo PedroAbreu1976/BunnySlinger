@@ -36,6 +36,8 @@ public static class DependencyInjectionExtensions
 	        return result;
         });
 
+        services.AddInterceptors(assemblies);
+
         return services;
 	}
 
@@ -51,12 +53,15 @@ public static class DependencyInjectionExtensions
 		return services.AddBunnyMqCommonServices(assemblies);
 	}
 
-	private static IServiceCollection AddBunnyMqCommonServices(this IServiceCollection services, params Assembly[] assemblies) {
+	private static IServiceCollection AddBunnyMqCommonServices(this IServiceCollection services, params Assembly[] assemblies) 
+	{
 		services.AddSingleton<IChannelProvider, BunnyMqChannelProvider>();
 		services.AddSingleton<IBunnySling, BunnyMqSling>();
 
 		var messageTypes = assemblies.GetMessageTypes();
 		var handlerTypeDic = assemblies.GetMessageHandlerTypes();
+		
+		
 		foreach (Type handlerType in handlerTypeDic.Keys)
 		{
 			services.AddScoped(handlerType);
@@ -76,9 +81,23 @@ public static class DependencyInjectionExtensions
 			return result;
 		});
 
+		services.AddInterceptors(assemblies);
+
 		return services;
     }
 
+	private static IServiceCollection AddInterceptors(this IServiceCollection services, params Assembly[] assemblies) 
+	{
+		var interceptorTypes = assemblies.GetInterceptorTypes();
+		foreach (var type in interceptorTypes)
+		{
+			services.AddScoped(typeof(IBunnyInterceptor), type);
+		}
+
+		services.AddScoped<BunnyInterceptors>();
+		
+		return services;
+	}
 
     public static async Task<T> StartBunnyObserver<T>(this T host, CancellationToken ct = default)
 		where T : IHost

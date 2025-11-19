@@ -1,8 +1,9 @@
-﻿using RabbitMQ.Client;
+﻿using Microsoft.EntityFrameworkCore.Diagnostics.Internal;
+using Microsoft.Extensions.DependencyInjection;
+using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
 using System.Text.Json;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace BunnySlinger.Rabbit;
 
@@ -66,7 +67,10 @@ internal class BunnyMqRegister : IBunnyRegister
 					{
 						// Get the handler instance using the resolved handlerType
 						var handler = scope.ServiceProvider.GetRequiredService(handlerType) as IBunnyCatcher;
-						result = await handler!.CatchBunnyAsync(message);
+
+						var interceptors = scope.ServiceProvider.GetRequiredService<BunnyInterceptors>();
+						result = await interceptors.OnBunnyCatch(message, handler!.CatchBunnyAsync);
+                        //result = await handler!.CatchBunnyAsync(message);
 					}
 					if (result)
 					{
@@ -102,7 +106,9 @@ internal class BunnyMqRegister : IBunnyRegister
 				var message = JsonSerializer.Deserialize<T>(json);
 				if (message != null)
 				{
-					var result = await handler.CatchBunnyAsync(message);
+					var interceptors = _serviceProvider.GetRequiredService<BunnyInterceptors>();
+                    var result = await interceptors.OnBunnyCatch(message, handler!.CatchBunnyAsync);
+                    //var result = await handler.CatchBunnyAsync(message);
 					if (result)
 					{
 						await channel.BasicAckAsync(ea.DeliveryTag, false);
