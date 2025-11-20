@@ -1,12 +1,8 @@
-﻿using BunnySlinger.InMemory;
-using BunnySlinger.Options;
+﻿using BunnySlinger.Options;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using System.Reflection;
-
 using BunnySlinger.Extensions;
-
 
 namespace BunnySlinger.Rabbit;
 
@@ -28,31 +24,30 @@ public static class DependencyInjectionExtensions
 	{
 		services.AddSingleton<IChannelProvider, BunnyMqChannelProvider>();
 		services.AddSingleton<IBunnySling, BunnyMqSling>();
-
-		var messageTypes = assemblies.GetMessageTypes();
-		var handlerTypeDic = assemblies.GetMessageHandlerTypes();
-		
-		
-		foreach (Type handlerType in handlerTypeDic.Keys)
-		{
-			services.AddScoped(handlerType);
-		}
+		services.AddScoped<BunnyInterceptors>();
 
 		services.AddSingleton<IBunnyRegister>(sp => {
 			var channelProvider = sp.GetRequiredService<IChannelProvider>();
-			var result = new BunnyMqRegister(channelProvider, sp);
-			messageTypes.ForEach(x => {
-				result.AddBunny(x);
-			});
-			foreach (Type handlerType in handlerTypeDic.Keys)
-			{
-				result.AddBunnyCatcher(handlerType, handlerTypeDic[handlerType]);
-			}
+			var bunnyMessageTypes = sp.GetService<BunnyMessageTypes>();
+			var bunnyHandlerTypes = sp.GetService<BunnyHandlerTypes>();
 
-			return result;
+            var result = new BunnyMqRegister(channelProvider, sp);
+            if (bunnyMessageTypes is not null)
+            {
+	            bunnyMessageTypes.MessageTypes.ForEach(x => result.AddBunny(x));
+            }
+            if (bunnyHandlerTypes is not null)
+            {
+	            foreach (Type handlerType in bunnyHandlerTypes.HandlerTypes.Keys)
+	            {
+		            result.AddBunnyCatcher(handlerType, bunnyHandlerTypes.HandlerTypes[handlerType]);
+	            }
+            }
+
+            return result;
 		});
 
-		services.AddInterceptors(assemblies);
+		services.AddBunnyInterceptors(assemblies);
 
 		return services;
     }

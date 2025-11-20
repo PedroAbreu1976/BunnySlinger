@@ -12,31 +12,54 @@ public static class DependencyInjectionExtensions
 		services.AddSingleton<BunnyInMemoryQueue>();
         services.AddHostedService<ChannelPublisherWorker>();
         services.AddSingleton<IBunnySling, BunnyInMemorySling>();
-
-        var handlerTypeDic = assemblies.GetMessageHandlerTypes();
-        foreach (Type handlerType in handlerTypeDic.Keys)
-        {
-	        services.AddScoped(handlerType);
-        }
+        services.AddScoped<BunnyInterceptors>();
 
         services.AddSingleton<IBunnyRegister>(sp => {
 	        var bunnyInMemoryQueue = sp.GetRequiredService<BunnyInMemoryQueue>();
+	        var bunnyMessageTypes = sp.GetService<BunnyMessageTypes>();
+			var bunnyHandlerTypes = sp.GetService<BunnyHandlerTypes>();
 
             var result = new BunnyInMemoryRegister(sp, bunnyInMemoryQueue);
-	        foreach (Type handlerType in handlerTypeDic.Keys)
-	        {
-		        result.AddBunnyCatcher(handlerType, handlerTypeDic[handlerType]);
-	        }
+
+            if (bunnyMessageTypes is not null) {
+	            bunnyMessageTypes.MessageTypes.ForEach(x => result.AddBunny(x));
+            }
+
+            if (bunnyHandlerTypes is not null) {
+	            foreach (Type handlerType in bunnyHandlerTypes.HandlerTypes.Keys)
+	            {
+		            result.AddBunnyCatcher(handlerType, bunnyHandlerTypes.HandlerTypes[handlerType]);
+	            }
+            }
 
 	        return result;
         });
 
-        services.AddInterceptors(assemblies);
+        services.AddBunnyInterceptors(assemblies);
 
         return services;
 	}
 
-	public static IServiceCollection AddInterceptors(this IServiceCollection services, params Assembly[] assemblies) 
+	public static IServiceCollection AddBunnies(this IServiceCollection services, params Assembly[] assemblies) {
+		services.AddSingleton(_ => new BunnyMessageTypes(assemblies));
+		
+        return services;
+	}
+
+	public static IServiceCollection AddBunnyHandlers(this IServiceCollection services, params Assembly[] assemblies)
+	{
+		services.AddSingleton(_ => new BunnyHandlerTypes(assemblies));
+
+		var handlerTypeDic = assemblies.GetMessageHandlerTypes();
+		foreach (Type handlerType in handlerTypeDic.Keys)
+		{
+			services.AddScoped(handlerType);
+		}
+
+        return services;
+	}
+
+    public static IServiceCollection AddBunnyInterceptors(this IServiceCollection services, params Assembly[] assemblies) 
 	{
 		var interceptorTypes = assemblies.GetInterceptorTypes();
 		foreach (var type in interceptorTypes)
@@ -44,8 +67,6 @@ public static class DependencyInjectionExtensions
 			services.AddScoped(typeof(IBunnyInterceptor), type);
 		}
 
-		services.AddScoped<BunnyInterceptors>();
-		
 		return services;
 	}
 

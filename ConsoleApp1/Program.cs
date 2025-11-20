@@ -23,6 +23,10 @@ builder.ConfigureServices((hostContext, services) => {
 		typeof(MyCuteBunny).Assembly);
 
 	//services.AddBunnyInMemory(typeof(MyCuteBunny).Assembly);
+
+	services.AddBunnies(typeof(MyCuteBunny).Assembly);
+	services.AddBunnyHandlers(typeof(MyCuteBunny).Assembly);
+	services.AddBunnyInterceptors(typeof(MyCuteBunny).Assembly);
 });
 
 var app = builder.Build();
