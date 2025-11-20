@@ -3,13 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36327.8
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{1AA86F07-ACB2-4BF7-BA3A-91B6FAAC9B02}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BunnySlinger", "BunnySlinger\BunnySlinger.csproj", "{E33DF2B3-8518-4D77-ACF8-C7B0EEFD8423}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BunnySlinger.Rabbit", "BunnySlinger.Rabbit\BunnySlinger.Rabbit.csproj", "{7452A918-2655-4B93-A162-B978E6A84834}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BunnySlinger.Outbox", "BunnySlinger.Outbox\BunnySlinger.Outbox.csproj", "{8B68AC45-F011-4578-ABB0-64001FBDC9DF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleSlingerApp", "ExampleSlingerApp\ExampleSlingerApp.csproj", "{7442B474-9577-4712-A5AC-43EBF7E58040}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleBunnies", "ExampleBunnies\ExampleBunnies.csproj", "{FD88F969-913E-47AD-8462-6F87F412E17E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleCatcherApp", "ExampleCatcherApp\ExampleCatcherApp.csproj", "{35726635-7E04-4B32-9E36-03A661F062C4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +21,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1AA86F07-ACB2-4BF7-BA3A-91B6FAAC9B02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1AA86F07-ACB2-4BF7-BA3A-91B6FAAC9B02}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1AA86F07-ACB2-4BF7-BA3A-91B6FAAC9B02}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1AA86F07-ACB2-4BF7-BA3A-91B6FAAC9B02}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E33DF2B3-8518-4D77-ACF8-C7B0EEFD8423}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E33DF2B3-8518-4D77-ACF8-C7B0EEFD8423}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E33DF2B3-8518-4D77-ACF8-C7B0EEFD8423}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -33,6 +33,18 @@ Global
 		{8B68AC45-F011-4578-ABB0-64001FBDC9DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B68AC45-F011-4578-ABB0-64001FBDC9DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B68AC45-F011-4578-ABB0-64001FBDC9DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7442B474-9577-4712-A5AC-43EBF7E58040}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7442B474-9577-4712-A5AC-43EBF7E58040}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7442B474-9577-4712-A5AC-43EBF7E58040}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7442B474-9577-4712-A5AC-43EBF7E58040}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD88F969-913E-47AD-8462-6F87F412E17E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD88F969-913E-47AD-8462-6F87F412E17E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD88F969-913E-47AD-8462-6F87F412E17E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD88F969-913E-47AD-8462-6F87F412E17E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35726635-7E04-4B32-9E36-03A661F062C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35726635-7E04-4B32-9E36-03A661F062C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35726635-7E04-4B32-9E36-03A661F062C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35726635-7E04-4B32-9E36-03A661F062C4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
