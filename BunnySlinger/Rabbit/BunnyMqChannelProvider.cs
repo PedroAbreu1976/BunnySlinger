@@ -39,7 +39,7 @@ namespace BunnySlinger.Rabbit
 	        _connection = null;
 	        foreach (var observer in _observers)
 	        {
-		        await observer.OnConnectionBokenAsync();
+		        await observer.OnConnectionBrokenAsync();
 	        }
 			
             while (_connection == null || !_connection.IsOpen) {

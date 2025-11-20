@@ -1,7 +1,7 @@
 ﻿namespace BunnySlinger
 {
     public interface IConnectionObserver {
-	    Task OnConnectionBokenAsync();
+	    Task OnConnectionBrokenAsync();
 		Task OnConnectionEstablishedAsync();
     }
 }

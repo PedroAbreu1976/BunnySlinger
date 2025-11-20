@@ -18,15 +18,15 @@ var builder = Host.CreateDefaultBuilder();
 
 
 builder.ConfigureServices((hostContext, services) => {
-	services.AddBunnyMq(
-		new BunnyMqOptions
-		{
-			HostName = "localhost",
-			Port = 5672
-		},
-		typeof(MyCuteBunny).Assembly);
+	//services.AddBunnyMq(
+	//	new BunnyMqOptions
+	//	{
+	//		HostName = "localhost",
+	//		Port = 5672
+	//	},
+	//	typeof(MyCuteBunny).Assembly);
 
-	//services.AddBunnyInMemory(typeof(MyCuteBunny).Assembly);
+	services.AddBunnyInMemory(typeof(MyCuteBunny).Assembly);
 });
 
 var app = builder.Build();

@@ -2,8 +2,6 @@
 
 namespace BunnySlinger.InMemory;
 
-// It's the Channel that handles the actual message passing
-// We can control the capacity and backpressure handling here
 public class BunnyInMemoryQueue(int capacity = 100)
 {
 	private readonly Channel<IBunny> _queue =

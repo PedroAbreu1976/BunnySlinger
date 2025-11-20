@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Diagnostics.Internal;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
@@ -146,7 +145,7 @@ internal class BunnyMqRegister : IBunnyRegister
 		_semaphore.Dispose();
 	}
 
-	public Task OnConnectionBokenAsync() {
+	public Task OnConnectionBrokenAsync() {
 		return Task.CompletedTask;
 	}
 
