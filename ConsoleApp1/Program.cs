@@ -19,10 +19,9 @@ builder.ConfigureServices((hostContext, services) => {
 		{
 			HostName = "localhost",
 			Port = 5672
-		},
-		typeof(MyCuteBunny).Assembly);
+		});
 
-	//services.AddBunnyInMemory(typeof(MyCuteBunny).Assembly);
+	//services.AddBunnyInMemory();
 
 	services.AddBunnies(typeof(MyCuteBunny).Assembly);
 	services.AddBunnyHandlers(typeof(MyCuteBunny).Assembly);

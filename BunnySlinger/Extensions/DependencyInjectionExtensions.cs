@@ -7,7 +7,7 @@ namespace BunnySlinger.Extensions;
 
 public static class DependencyInjectionExtensions
 {
-	public static IServiceCollection AddBunnyInMemory(this IServiceCollection services, params Assembly[] assemblies) {
+	public static IServiceCollection AddBunnyInMemory(this IServiceCollection services) {
 
 		services.AddSingleton<BunnyInMemoryQueue>();
         services.AddHostedService<ChannelPublisherWorker>();
@@ -15,8 +15,6 @@ public static class DependencyInjectionExtensions
         services.AddScoped<BunnyInterceptors>();
 
         services.AddSingleton<IBunnyRegister, BunnyInMemoryRegister>();
-
-        services.AddBunnyInterceptors(assemblies);
 
         return services;
 	}

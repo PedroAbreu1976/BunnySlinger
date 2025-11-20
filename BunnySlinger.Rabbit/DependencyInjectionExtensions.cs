@@ -8,27 +8,24 @@ namespace BunnySlinger.Rabbit;
 
 public static class DependencyInjectionExtensions
 {
-    public static IServiceCollection AddBunnyMq(this IServiceCollection services, BunnyMqOptions options, params Assembly[] assemblies)
+    public static IServiceCollection AddBunnyMq(this IServiceCollection services, BunnyMqOptions options)
 	{
 		services.AddSingleton<IOptions<BunnyMqOptions>>(sp=> new BunnyMqOptionsOptions(options));
-        return services.AddBunnyMqCommonServices(assemblies);
+        return services.AddBunnyMqCommonServices();
 	}
 
-    public static IServiceCollection AddBunnyMq(this IServiceCollection services, params Assembly[] assemblies)
+    public static IServiceCollection AddBunnyMq(this IServiceCollection services)
 	{
 		services.ConfigureOptions<BunnyMqOptionsSetup>();
-		return services.AddBunnyMqCommonServices(assemblies);
+		return services.AddBunnyMqCommonServices();
 	}
 
-	private static IServiceCollection AddBunnyMqCommonServices(this IServiceCollection services, params Assembly[] assemblies) 
+	private static IServiceCollection AddBunnyMqCommonServices(this IServiceCollection services) 
 	{
 		services.AddSingleton<IChannelProvider, BunnyMqChannelProvider>();
 		services.AddSingleton<IBunnySling, BunnyMqSling>();
 		services.AddScoped<BunnyInterceptors>();
-
 		services.AddSingleton<IBunnyRegister, BunnyMqRegister>();
-
-		services.AddBunnyInterceptors(assemblies);
 
 		return services;
     }
