@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BunnySlinger", "BunnySlinge
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BunnySlinger.Rabbit", "BunnySlinger.Rabbit\BunnySlinger.Rabbit.csproj", "{7452A918-2655-4B93-A162-B978E6A84834}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BunnySlinger.Outbox", "BunnySlinger.Outbox\BunnySlinger.Outbox.csproj", "{8B68AC45-F011-4578-ABB0-64001FBDC9DF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{7452A918-2655-4B93-A162-B978E6A84834}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7452A918-2655-4B93-A162-B978E6A84834}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7452A918-2655-4B93-A162-B978E6A84834}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B68AC45-F011-4578-ABB0-64001FBDC9DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B68AC45-F011-4578-ABB0-64001FBDC9DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B68AC45-F011-4578-ABB0-64001FBDC9DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B68AC45-F011-4578-ABB0-64001FBDC9DF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

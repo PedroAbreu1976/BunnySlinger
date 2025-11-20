@@ -4,7 +4,7 @@
 using BunnySlinger;
 using BunnySlinger.Extensions;
 using BunnySlinger.Options;
-using BunnySlinger.Rabbit;
+using BunnySlinger.Rabbit.Extensions;
 using ConsoleApp1;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

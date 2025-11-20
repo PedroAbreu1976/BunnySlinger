@@ -49,34 +49,20 @@ public static class DependencyInjectionExtensions
 		return services;
 	}
 
-    public static async Task<T> StartBunnyObserver<T>(this T host, CancellationToken ct = default)
-		where T : IHost
-	{
+	public static async Task<T> StartBunnyObserver<T>(this T host, CancellationToken ct = default) where T : IHost {
 		var consumer = host.Services.GetRequiredService<IBunnyRegister>();
 		var bunnyMessageTypes = host.Services.GetService<BunnyMessageTypes>();
 		var bunnyHandlerTypes = host.Services.GetService<BunnyHandlerTypes>();
+		var channelPublisherWorker =
+			host.Services.GetServices<IHostedService>().OfType<ChannelPublisherWorker>().FirstOrDefault();
 
-		if (bunnyMessageTypes is not null)
-		{
-			bunnyMessageTypes.MessageTypes.ForEach(x => consumer.AddBunny(x));
-		}
+        bunnyMessageTypes?.MessageTypes.ForEach(x => consumer.AddBunny(x));
+		bunnyHandlerTypes?.HandlerTypes.Keys.ForEach(x => consumer.AddBunnyCatcher(x, bunnyHandlerTypes.HandlerTypes[x]));
+		await consumer.RegisterAsync();
 
-		if (bunnyHandlerTypes is not null)
-		{
-			foreach (Type handlerType in bunnyHandlerTypes.HandlerTypes.Keys)
-			{
-				consumer.AddBunnyCatcher(handlerType, bunnyHandlerTypes.HandlerTypes[handlerType]);
-			}
-		}
-
-        await consumer.RegisterAsync();
-
-		var channelPublisherWorker = host.Services.GetServices<IHostedService>().
-			OfType<ChannelPublisherWorker>().
-			FirstOrDefault();
 		channelPublisherWorker?.StartAsync(ct);
 
-        return host;
-    }
+		return host;
+	}
 }
 

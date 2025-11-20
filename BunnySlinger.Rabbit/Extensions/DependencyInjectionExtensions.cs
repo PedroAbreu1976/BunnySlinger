@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
-namespace BunnySlinger.Rabbit;
+namespace BunnySlinger.Rabbit.Extensions;
 
 public static class DependencyInjectionExtensions
 {
