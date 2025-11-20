@@ -1,8 +1,6 @@
 ﻿using BunnySlinger.Options;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using System.Reflection;
-using BunnySlinger.Extensions;
 
 namespace BunnySlinger.Rabbit;
 
