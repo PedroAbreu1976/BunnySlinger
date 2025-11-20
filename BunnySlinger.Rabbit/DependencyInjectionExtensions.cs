@@ -26,26 +26,7 @@ public static class DependencyInjectionExtensions
 		services.AddSingleton<IBunnySling, BunnyMqSling>();
 		services.AddScoped<BunnyInterceptors>();
 
-		services.AddSingleton<IBunnyRegister>(sp => {
-			var channelProvider = sp.GetRequiredService<IChannelProvider>();
-			var bunnyMessageTypes = sp.GetService<BunnyMessageTypes>();
-			var bunnyHandlerTypes = sp.GetService<BunnyHandlerTypes>();
-
-            var result = new BunnyMqRegister(channelProvider, sp);
-            if (bunnyMessageTypes is not null)
-            {
-	            bunnyMessageTypes.MessageTypes.ForEach(x => result.AddBunny(x));
-            }
-            if (bunnyHandlerTypes is not null)
-            {
-	            foreach (Type handlerType in bunnyHandlerTypes.HandlerTypes.Keys)
-	            {
-		            result.AddBunnyCatcher(handlerType, bunnyHandlerTypes.HandlerTypes[handlerType]);
-	            }
-            }
-
-            return result;
-		});
+		services.AddSingleton<IBunnyRegister, BunnyMqRegister>();
 
 		services.AddBunnyInterceptors(assemblies);
 

@@ -14,26 +14,7 @@ public static class DependencyInjectionExtensions
         services.AddSingleton<IBunnySling, BunnyInMemorySling>();
         services.AddScoped<BunnyInterceptors>();
 
-        services.AddSingleton<IBunnyRegister>(sp => {
-	        var bunnyInMemoryQueue = sp.GetRequiredService<BunnyInMemoryQueue>();
-	        var bunnyMessageTypes = sp.GetService<BunnyMessageTypes>();
-			var bunnyHandlerTypes = sp.GetService<BunnyHandlerTypes>();
-
-            var result = new BunnyInMemoryRegister(sp, bunnyInMemoryQueue);
-
-            if (bunnyMessageTypes is not null) {
-	            bunnyMessageTypes.MessageTypes.ForEach(x => result.AddBunny(x));
-            }
-
-            if (bunnyHandlerTypes is not null) {
-	            foreach (Type handlerType in bunnyHandlerTypes.HandlerTypes.Keys)
-	            {
-		            result.AddBunnyCatcher(handlerType, bunnyHandlerTypes.HandlerTypes[handlerType]);
-	            }
-            }
-
-	        return result;
-        });
+        services.AddSingleton<IBunnyRegister, BunnyInMemoryRegister>();
 
         services.AddBunnyInterceptors(assemblies);
 
@@ -74,7 +55,23 @@ public static class DependencyInjectionExtensions
 		where T : IHost
 	{
 		var consumer = host.Services.GetRequiredService<IBunnyRegister>();
-		await consumer.RegisterAsync();
+		var bunnyMessageTypes = host.Services.GetService<BunnyMessageTypes>();
+		var bunnyHandlerTypes = host.Services.GetService<BunnyHandlerTypes>();
+
+		if (bunnyMessageTypes is not null)
+		{
+			bunnyMessageTypes.MessageTypes.ForEach(x => consumer.AddBunny(x));
+		}
+
+		if (bunnyHandlerTypes is not null)
+		{
+			foreach (Type handlerType in bunnyHandlerTypes.HandlerTypes.Keys)
+			{
+				consumer.AddBunnyCatcher(handlerType, bunnyHandlerTypes.HandlerTypes[handlerType]);
+			}
+		}
+
+        await consumer.RegisterAsync();
 
 		var channelPublisherWorker = host.Services.GetServices<IHostedService>().
 			OfType<ChannelPublisherWorker>().
