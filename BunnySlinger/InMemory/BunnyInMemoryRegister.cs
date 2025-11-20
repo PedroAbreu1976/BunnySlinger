@@ -6,9 +6,6 @@ namespace BunnySlinger.InMemory;
 public class BunnyInMemoryRegister(IServiceProvider serviceProvider, BunnyInMemoryQueue queue) : IBunnyRegister {
 	private readonly List<Action> _handlers = [];
 
-	internal bool SendEvents { get; set; } = false;
-	
-	
     public void AddBunny<T>() where T : IBunny {
 
 	}

@@ -38,26 +38,26 @@ namespace ConsoleApp1
         }
     }
 
-    public class ExceptionHandlerBunnyInterceptor(ILogger<ExceptionHandlerBunnyInterceptor> logger) : IBunnyInterceptor
-    {
+    //public class ExceptionHandlerBunnyInterceptor(ILogger<ExceptionHandlerBunnyInterceptor> logger) : IBunnyInterceptor
+    //{
 
-        public async Task<bool> OnBunnyCatch(IBunny bunny, Func<IBunny, Task<bool>> catcher)
-        {
-            try
-            {
+    //    public async Task<bool> OnBunnyCatch(IBunny bunny, Func<IBunny, Task<bool>> catcher)
+    //    {
+    //        try
+    //        {
 
-                var result = await catcher(bunny);
-                return result;
-            }
-            catch (Exception ex)
-            {
-                logger.LogError($"{ex.Message}");
-                return false;
-            }
-        }
-    }
+    //            var result = await catcher(bunny);
+    //            return result;
+    //        }
+    //        catch (Exception ex)
+    //        {
+    //            logger.LogError($"{ex.Message}");
+    //            return false;
+    //        }
+    //    }
+    //}
 
-    public class TestBunnyInterceptor(ILogger<ExceptionHandlerBunnyInterceptor> logger) : IBunnyInterceptor<MyCuteBunny>
+    public class TestBunnyInterceptor(ILogger<TestBunnyInterceptor> logger) : IBunnyInterceptor<MyCuteBunny>
     {
 
 	    public async Task<bool> OnBunnyCatch(MyCuteBunny bunny, Func<IBunny, Task<bool>> catcher)

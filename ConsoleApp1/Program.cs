@@ -1,15 +1,11 @@
 ﻿//https://medium.com/@nikitinsn6/a-beginners-guide-to-rabbitmq-and-how-to-use-it-in-net-446662e53ea2
 //https://www.rabbitmq.com/tutorials/tutorial-three-dotnet
 
-using System.Runtime.CompilerServices;
-
 using BunnySlinger;
 using BunnySlinger.Extensions;
-using BunnySlinger.InMemory;
 using BunnySlinger.Options;
-
+using BunnySlinger.Rabbit;
 using ConsoleApp1;
-
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -18,15 +14,15 @@ var builder = Host.CreateDefaultBuilder();
 
 
 builder.ConfigureServices((hostContext, services) => {
-	//services.AddBunnyMq(
-	//	new BunnyMqOptions
-	//	{
-	//		HostName = "localhost",
-	//		Port = 5672
-	//	},
-	//	typeof(MyCuteBunny).Assembly);
+	services.AddBunnyMq(
+		new BunnyMqOptions
+		{
+			HostName = "localhost",
+			Port = 5672
+		},
+		typeof(MyCuteBunny).Assembly);
 
-	services.AddBunnyInMemory(typeof(MyCuteBunny).Assembly);
+	//services.AddBunnyInMemory(typeof(MyCuteBunny).Assembly);
 });
 
 var app = builder.Build();
