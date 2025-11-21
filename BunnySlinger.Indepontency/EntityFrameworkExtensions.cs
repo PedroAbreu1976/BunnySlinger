@@ -4,7 +4,7 @@ namespace BunnySlinger.Idempotency;
 
 public static class EntityFrameworkExtensions
 {
-    public static ModelBuilder AddBunnyOutbox(this ModelBuilder builder)
+    public static ModelBuilder AddBunnyIdempotency(this ModelBuilder builder)
     {
         builder.Entity<BunnyLog>().ToTable("BunnyLog");
         return builder;

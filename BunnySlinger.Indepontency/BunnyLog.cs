@@ -1,8 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
+using Microsoft.EntityFrameworkCore;
+
 
 namespace BunnySlinger.Idempotency
 {
+	[PrimaryKey(nameof(BunnyID), nameof(BunnyType), nameof(BunnyCatcherType))]
+	[Index(nameof(HashCode))]
     public class BunnyLog
     {
 	    [MaxLength(50)]

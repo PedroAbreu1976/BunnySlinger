@@ -66,7 +66,7 @@ internal class BunnyMqRegister : IBunnyRegister
 					{
 						var handler = scope.ServiceProvider.GetRequiredService(handlerType) as IBunnyCatcher;
 						var interceptors = scope.ServiceProvider.GetRequiredService<BunnyInterceptors>();
-						result = await interceptors.OnBunnyCatch(message, handler!.CatchBunnyAsync);
+						result = await interceptors.OnBunnyCatch(message, handler!.CatchBunnyAsync, handlerType);
 					}
 					if (result)
 					{
@@ -103,7 +103,7 @@ internal class BunnyMqRegister : IBunnyRegister
 				if (message != null)
 				{
 					var interceptors = _serviceProvider.GetRequiredService<BunnyInterceptors>();
-                    var result = await interceptors.OnBunnyCatch(message, handler!.CatchBunnyAsync);
+                    var result = await interceptors.OnBunnyCatch(message, handler!.CatchBunnyAsync, handlerType);
 					if (result)
 					{
 						await channel.BasicAckAsync(ea.DeliveryTag, false);

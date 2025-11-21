@@ -1,7 +1,7 @@
 ﻿namespace BunnySlinger;
 
 public class BunnyInterceptors(IEnumerable<IBunnyInterceptor> interceptors) {
-	public async Task<bool> OnBunnyCatch(IBunny bunny, Func<IBunny, Task<bool>> catcher) {
+	public async Task<bool> OnBunnyCatch(IBunny bunny, Func<IBunny, Task<bool>> catcher, Type handlerType) {
 		// 1. Get the relevant interceptors for this bunny type
 		var applicableInterceptors = GetInterceptors(bunny);
 
@@ -20,7 +20,7 @@ public class BunnyInterceptors(IEnumerable<IBunnyInterceptor> interceptors) {
 				// Call the interceptor. 
 				// If the interceptor returns 'false' and does NOT call 'currentNext',
 				// the chain breaks here.
-				return await interceptor.OnBunnyCatch(b, currentNext);
+				return await interceptor.OnBunnyCatch(b, currentNext, handlerType);
 			};
 		}
 

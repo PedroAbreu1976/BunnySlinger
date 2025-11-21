@@ -10,7 +10,7 @@ namespace ExampleCatcherApp
     public class TestOtherBunnyCatcher(ILogger<TestOtherBunnyCatcher> logger) : IBunnyCatcher<TestBunny>
     {
 	    public Task<bool> CatchBunnyAsync(TestBunny bunny) {
-            logger.LogInformation($"{nameof(TestOtherBunnyCatcher)}: {bunny.Message}");
+            Console.WriteLine($"Received by {nameof(TestOtherBunnyCatcher)}: {bunny.Message}");
             return Task.FromResult(true);
 	    }
     }

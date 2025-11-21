@@ -24,7 +24,7 @@ public class BunnyInMemoryRegister(IServiceProvider serviceProvider, BunnyInMemo
 					using (var scope = serviceProvider.CreateScope()) {
 						var handler = scope.ServiceProvider.GetRequiredService(handlerType) as IBunnyCatcher;
 						var interceptors = scope.ServiceProvider.GetRequiredService<BunnyInterceptors>();
-						args.Handled = await interceptors.OnBunnyCatch(args.Bunny, handler!.CatchBunnyAsync);
+						args.Handled = await interceptors.OnBunnyCatch(args.Bunny, handler!.CatchBunnyAsync, handlerType);
 					}
 				}
 			};
@@ -36,7 +36,7 @@ public class BunnyInMemoryRegister(IServiceProvider serviceProvider, BunnyInMemo
 			queue.BunnyDispatched += async (sender, args) => {
 				if (args.Bunny is T msg) {
 					var interceptors = serviceProvider.GetRequiredService<BunnyInterceptors>();
-					args.Handled = await interceptors.OnBunnyCatch(msg, handler!.CatchBunnyAsync);
+					args.Handled = await interceptors.OnBunnyCatch(msg, handler!.CatchBunnyAsync, handler.GetType());
 				}
 			};
 		});
