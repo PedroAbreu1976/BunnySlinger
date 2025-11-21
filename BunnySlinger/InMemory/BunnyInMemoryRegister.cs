@@ -21,7 +21,6 @@ public class BunnyInMemoryRegister(IServiceProvider serviceProvider, BunnyInMemo
 			queue.BunnyDispatched += async (sender, args) => {
 				if (args.Bunny.GetType() == msgType)
 				{
-					bool result;
 					using (var scope = serviceProvider.CreateScope()) {
 						var handler = scope.ServiceProvider.GetRequiredService(handlerType) as IBunnyCatcher;
 						var interceptors = scope.ServiceProvider.GetRequiredService<BunnyInterceptors>();
