@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace ExampleCatcherApp
 {
-    public class TestOtherBunnyCatcher(ILogger<TestBunnyCatcher> logger) : IBunnyCatcher<TestBunny>
+    public class TestOtherBunnyCatcher(ILogger<TestOtherBunnyCatcher> logger) : IBunnyCatcher<TestBunny>
     {
 	    public Task<bool> CatchBunnyAsync(TestBunny bunny) {
             logger.LogInformation($"{nameof(TestOtherBunnyCatcher)}: {bunny.Message}");

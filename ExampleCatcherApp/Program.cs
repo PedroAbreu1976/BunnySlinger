@@ -29,7 +29,10 @@ var app = builder.Build();
 
 
 await app.StartBunnyObserver();
-
+Console.WriteLine("----------------------------");
+Console.WriteLine("RabbitMQ Subscriber Example:");
 Console.WriteLine("Start catching bunnies:");
+Console.WriteLine("----------------------------");
+
 
 await app.RunAsync();

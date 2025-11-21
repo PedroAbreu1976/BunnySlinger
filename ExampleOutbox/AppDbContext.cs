@@ -1,9 +1,7 @@
 ﻿using BunnySlinger.Outbox.Extensions;
-
 using Microsoft.EntityFrameworkCore;
 
-
-namespace ExampleSlingerApp;
+namespace ExampleOutbox;
 
 public class AppDbContext : DbContext {
 	public AppDbContext() : base() { }

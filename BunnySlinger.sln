@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleBunnies", "ExampleBu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleCatcherApp", "ExampleCatcherApp\ExampleCatcherApp.csproj", "{35726635-7E04-4B32-9E36-03A661F062C4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleInMemory", "ExampleInMemory\ExampleInMemory.csproj", "{300363F0-0D53-41B3-9E80-FB7D7FC0799E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleOutbox", "ExampleOutbox\ExampleOutbox.csproj", "{6CA562D7-E57B-4107-B3CF-0DA6A09CDABF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +49,14 @@ Global
 		{35726635-7E04-4B32-9E36-03A661F062C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35726635-7E04-4B32-9E36-03A661F062C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35726635-7E04-4B32-9E36-03A661F062C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{300363F0-0D53-41B3-9E80-FB7D7FC0799E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{300363F0-0D53-41B3-9E80-FB7D7FC0799E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{300363F0-0D53-41B3-9E80-FB7D7FC0799E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{300363F0-0D53-41B3-9E80-FB7D7FC0799E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CA562D7-E57B-4107-B3CF-0DA6A09CDABF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CA562D7-E57B-4107-B3CF-0DA6A09CDABF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CA562D7-E57B-4107-B3CF-0DA6A09CDABF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CA562D7-E57B-4107-B3CF-0DA6A09CDABF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
