@@ -12,5 +12,7 @@ public class BunnyMessageTypes {
 	}
 	
 	public IEnumerable<Type> MessageTypes { get; }
+
+	public Type this[string fullName] => MessageTypes.First(x => x.FullName == fullName);
 }
 

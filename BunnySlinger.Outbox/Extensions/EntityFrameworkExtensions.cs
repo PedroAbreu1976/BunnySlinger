@@ -13,17 +13,17 @@ public static class EntityFrameworkExtensions
         return builder;
     }
 
-    internal static DbSet<BunnyOutboxItem> GetBunnyOutbox(this DbContext context) 
+    public static DbSet<BunnyOutboxItem> GetBunnyOutbox(this DbContext context) 
     {
         return context.Set<BunnyOutboxItem>();
     }
 
-    internal static DbSet<BunnyFailedItem> GetBunnyFailed(this DbContext context)
+    public static DbSet<BunnyFailedItem> GetBunnyFailed(this DbContext context)
     {
         return context.Set<BunnyFailedItem>();
     }
 
-    internal static DbSet<BunnyProcessedItem> GetBunnyProcessed(this DbContext context)
+    public static DbSet<BunnyProcessedItem> GetBunnyProcessed(this DbContext context)
     {
         return context.Set<BunnyProcessedItem>();
     }
