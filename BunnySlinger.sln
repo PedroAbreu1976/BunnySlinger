@@ -23,6 +23,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BunnySlinger.Idempotency", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleIdempotency", "ExmapleIdempotency\ExampleIdempotency.csproj", "{D2BD5DB0-193D-444A-B7E6-BFF012121A23}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BunnySlinger.Tests", "BunnySlinger.Tests\BunnySlinger.Tests.csproj", "{377CEE70-A629-452E-B5E5-6751F20BFD2D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,9 +73,16 @@ Global
 		{D2BD5DB0-193D-444A-B7E6-BFF012121A23}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2BD5DB0-193D-444A-B7E6-BFF012121A23}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D2BD5DB0-193D-444A-B7E6-BFF012121A23}.Release|Any CPU.Build.0 = Release|Any CPU
+		{377CEE70-A629-452E-B5E5-6751F20BFD2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{377CEE70-A629-452E-B5E5-6751F20BFD2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{377CEE70-A629-452E-B5E5-6751F20BFD2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{377CEE70-A629-452E-B5E5-6751F20BFD2D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{377CEE70-A629-452E-B5E5-6751F20BFD2D} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1FBBC54B-1C80-467E-8346-77EEFCC0E9E1}
