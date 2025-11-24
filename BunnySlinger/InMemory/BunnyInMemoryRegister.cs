@@ -4,7 +4,7 @@
 namespace BunnySlinger.InMemory;
 
 public class BunnyInMemoryRegister(IServiceProvider serviceProvider, BunnyInMemoryQueue queue) : IBunnyRegister {
-	private readonly List<Action> _handlers = [];
+	private readonly Dictionary<Type, Action> _handlers = [];
 
     public void AddBunny<T>() where T : IBunny {
 
@@ -17,33 +17,38 @@ public class BunnyInMemoryRegister(IServiceProvider serviceProvider, BunnyInMemo
 	}
 
 	public void AddBunnyCatcher(Type handlerType, Type msgType) {
-		_handlers.Add(() => {
-			queue.BunnyDispatched += async (sender, args) => {
-				if (args.Bunny.GetType() == msgType)
-				{
-					using (var scope = serviceProvider.CreateScope()) {
-						var handler = scope.ServiceProvider.GetRequiredService(handlerType) as IBunnyCatcher;
-						var interceptors = scope.ServiceProvider.GetRequiredService<BunnyInterceptors>();
-						args.Handled = await interceptors.OnBunnyCatch(args.Bunny, handler!.CatchBunnyAsync, handlerType);
+		_handlers.Add(
+			handlerType, () => 
+			{
+				queue.BunnyDispatched += async (sender, args) => {
+					if (args.Bunny.GetType() == msgType) {
+						using (var scope = serviceProvider.CreateScope()) {
+							var handler = scope.ServiceProvider.GetRequiredService(handlerType) as IBunnyCatcher;
+							var interceptors = scope.ServiceProvider.GetRequiredService<BunnyInterceptors>();
+							args.Handled = await interceptors.OnBunnyCatch(
+								args.Bunny, handler!.CatchBunnyAsync, handlerType);
+						}
 					}
-				}
-			};
-		});
-    }
+				};
+			});
+	}
 
 	public void AddBunnyCatcher<T>(IBunnyCatcher<T> handler) where T : IBunny {
-		_handlers.Add(() => {
-			queue.BunnyDispatched += async (sender, args) => {
-				if (args.Bunny is T msg) {
-					var interceptors = serviceProvider.GetRequiredService<BunnyInterceptors>();
-					args.Handled = await interceptors.OnBunnyCatch(msg, handler!.CatchBunnyAsync, handler.GetType());
-				}
-			};
-		});
-    }
-	
+		_handlers.Add(
+			handler.GetType(), () => {
+				queue.BunnyDispatched += async (sender, args) => 
+				{
+					if (args.Bunny is T msg) {
+						var interceptors = serviceProvider.GetRequiredService<BunnyInterceptors>();
+						args.Handled = await interceptors.OnBunnyCatch(
+							msg, handler!.CatchBunnyAsync, handler.GetType());
+					}
+				};
+			});
+	}
+
 	public Task RegisterAsync() {
-		foreach (var action in _handlers)
+		foreach (var action in _handlers.Values)
 		{
 			action();
 		}
