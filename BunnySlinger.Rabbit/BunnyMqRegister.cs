@@ -6,7 +6,7 @@ using System.Text.Json;
 
 namespace BunnySlinger.Rabbit;
 
-internal class BunnyMqRegister : IBunnyRegister
+public class BunnyMqRegister : IBunnyRegister
 {
 
 	private readonly Dictionary<Type,Func<Task>> _messages = [];

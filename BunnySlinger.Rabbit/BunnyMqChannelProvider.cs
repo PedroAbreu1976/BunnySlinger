@@ -1,11 +1,8 @@
-﻿using BunnySlinger.Options;
-using Microsoft.Extensions.Options;
-
-using RabbitMQ.Client;
+﻿using RabbitMQ.Client;
 
 namespace BunnySlinger.Rabbit
 {
-    public class BunnyMqChannelProvider(IOptions<BunnyMqOptions> bunnyMqOptions) : IChannelProvider
+    public class BunnyMqChannelProvider(IConnectionFactoryProvider connectionFactoryProvider) : IChannelProvider
     {
 		private IConnection? _connection;
 		private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
@@ -14,7 +11,7 @@ namespace BunnySlinger.Rabbit
         public async Task<IChannel> Create(CancellationToken ct = default) {
 
 	        await InitializeAsync();
-		    return await _connection!.CreateChannelAsync(cancellationToken: ct);
+		    return await _connection!.CreateChannelAsync(null, ct);
 	}
 
 		public async Task InitializeAsync(CancellationToken ct = default) {
@@ -22,7 +19,7 @@ namespace BunnySlinger.Rabbit
 			try
 			{
 				if (_connection is null || !_connection.IsOpen) {
-					var factory = bunnyMqOptions.Value.GetFactory();// new ConnectionFactory() { HostName = "localhost", Port = 5672 };
+					var factory = connectionFactoryProvider.GetFactory();// new ConnectionFactory() { HostName = "localhost", Port = 5672 };
                     _connection = await factory.CreateConnectionAsync(ct);
                     if (_connection.IsOpen) {
                         _connection.ConnectionShutdownAsync += _connection_ConnectionShutdownAsync;

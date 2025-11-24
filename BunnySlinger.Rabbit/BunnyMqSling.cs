@@ -1,4 +1,5 @@
-﻿using BunnySlinger.Extensions;
+﻿using BunnySlinger.Rabbit.Extensions;
+
 using RabbitMQ.Client;
 
 namespace BunnySlinger.Rabbit

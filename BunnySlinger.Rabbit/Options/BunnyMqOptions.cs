@@ -15,7 +15,7 @@ public class BunnyMqOptions {
         };
     }
 
-    internal ConnectionFactory GetFactory() {
+    public IConnectionFactory GetFactory() {
         _factory.Ssl.ServerName = Ssl.ServerName;
         _factory.Ssl.AcceptablePolicyErrors = Ssl.AcceptablePolicyErrors;
         _factory.Ssl.CertPath = Ssl.CertPath;

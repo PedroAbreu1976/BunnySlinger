@@ -24,6 +24,7 @@ public static class DependencyInjectionExtensions
 		services.AddSingleton<IBunnySling, BunnyMqSling>();
 		services.AddScoped<BunnyInterceptors>();
 		services.AddSingleton<IBunnyRegister, BunnyMqRegister>();
+		services.AddSingleton<IConnectionFactoryProvider, ConnectionFactoryProvider>();
 
 		return services;
     }
