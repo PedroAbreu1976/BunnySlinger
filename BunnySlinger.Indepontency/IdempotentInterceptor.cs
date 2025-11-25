@@ -4,42 +4,73 @@ using Microsoft.Extensions.Logging;
 
 namespace BunnySlinger.Idempotency
 {
-    internal class IdempotentInterceptor<TContext>(
+    public class IdempotentInterceptor<TContext>(
 	    TContext context, 
 	    BunnyHandlerTypes handlerTypes,
-	    ILogger<IdempotentInterceptor<TContext>> logger) : IBunnyInterceptor
+	    ILogger<IdempotentInterceptor<TContext>> logger) : IBunnyInterceptor<IIdempotentBunny>
 	    where TContext : DbContext
     {
-	    public async Task<bool> OnBunnyCatch(IBunny bunny, Func<IBunny, Task<bool>> catcher, Type handlerType)
-	    {
-		    if (bunny is IIdempotentBunny idempotentBunny) {
-			    try {
-				    var bunnyLog = CreateBunnyLog(handlerType, idempotentBunny);
+	    public async Task<bool> OnBunnyCatch(IIdempotentBunny bunny, Func<IBunny, Task<bool>> catcher, Type handlerType) {
+		    try
+		    {
+			    var bunnyLog = CreateBunnyLog(handlerType, bunny);
 
-				    var canProcess = await CanProcessBunnyAsync(bunnyLog);
-				    if (!canProcess) {
-					    return false;
-				    }
-
-				    await using var transaction = await context.Database.BeginTransactionAsync();
-
-				    var result = await catcher(bunny);
-
-				    if (result) {
-					    await BunnyProcessed(bunnyLog);
-				    }
-
-				    await transaction.CommitAsync();
-
-				    return result;
+			    var canProcess = await CanProcessBunnyAsync(bunnyLog);
+			    if (!canProcess)
+			    {
+				    return false;
 			    }
-			    catch (Exception ex) {
-					logger.LogError(ex, ex.Message);
+
+			    await using var transaction = await context.Database.BeginTransactionAsync();
+
+			    var result = await catcher(bunny);
+
+			    if (result)
+			    {
+				    await BunnyProcessed(bunnyLog);
 			    }
+
+			    await transaction.CommitAsync();
+
+			    return result;
 		    }
+		    catch (Exception ex)
+		    {
+			    logger.LogError(ex, ex.Message);
+				return false;
+		    }
+        }
 
-		    return await catcher(bunny);
-	    }
+	    //public async Task<bool> OnBunnyCatch(IBunny bunny, Func<IBunny, Task<bool>> catcher, Type handlerType)
+	    //{
+		   // if (bunny is IIdempotentBunny idempotentBunny) {
+			  //  try {
+				 //   var bunnyLog = CreateBunnyLog(handlerType, idempotentBunny);
+
+				 //   var canProcess = await CanProcessBunnyAsync(bunnyLog);
+				 //   if (!canProcess) {
+					//    return false;
+				 //   }
+
+				 //   await using var transaction = await context.Database.BeginTransactionAsync();
+
+				 //   var result = await catcher(bunny);
+
+				 //   if (result) {
+					//    await BunnyProcessed(bunnyLog);
+				 //   }
+
+				 //   await transaction.CommitAsync();
+
+				 //   return result;
+			  //  }
+			  //  catch (Exception ex) {
+					//logger.LogError(ex, ex.Message);
+			  //  }
+		   // }
+
+		   // return await catcher(bunny);
+	    //}
 
 	    private BunnyLog CreateBunnyLog(Type handlerType, IIdempotentBunny bunny) {
 		    var result = new BunnyLog

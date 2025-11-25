@@ -86,5 +86,31 @@ namespace BunnySlinger.Tests
             Assert.Contains(global, result);
             Assert.DoesNotContain(typed, result);
         }
+
+        [Fact]
+        public async Task OnBunnyCatch_ExecutesTypedInterceptor_ForInterfaceImplementedByBunny()
+        {
+            var dummy = new SpecialBunnyInterceptor();
+            var interceptors = new List<IBunnyInterceptor> { dummy };
+            var bunnyInterceptors = new BunnyInterceptors(interceptors);
+            var bunny = new SpecialBunny();
+            async Task<bool> catcher(IBunny b) { return true; }
+            var result = await bunnyInterceptors.OnBunnyCatch(bunny, catcher, typeof(object));
+            Assert.True(result);
+            Assert.Contains("special", dummy.Calls);
+        }
+
+        [Fact]
+        public async Task OnBunnyCatch_DoesNotExecuteTypedInterceptor_ForNonImplementingBunny()
+        {
+            var dummy = new SpecialBunnyInterceptor();
+            var interceptors = new List<IBunnyInterceptor> { dummy };
+            var bunnyInterceptors = new BunnyInterceptors(interceptors);
+            var bunny = new NonTestBunny();
+            async Task<bool> catcher(IBunny b) { return true; }
+            var result = await bunnyInterceptors.OnBunnyCatch(bunny, catcher, typeof(object));
+            Assert.True(result);
+            Assert.DoesNotContain("special", dummy.Calls);
+        }
     }
 }

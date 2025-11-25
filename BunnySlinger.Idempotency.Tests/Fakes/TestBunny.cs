@@ -1,4 +1,4 @@
-﻿namespace BunnySlinger.Tests.Bunnies
+﻿namespace BunnySlinger.Idempotency.Tests.Fakes
 {
     public class TestBunny: IBunny
     {

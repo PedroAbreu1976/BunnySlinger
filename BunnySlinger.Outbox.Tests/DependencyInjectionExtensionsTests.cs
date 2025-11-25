@@ -1,10 +1,5 @@
-﻿using BunnySlinger.Extensions;
-using BunnySlinger.Outbox.Extensions;
-using BunnySlinger.Outbox.Options;
-using BunnySlinger.Outbox.Tests.Fakes;
+﻿using BunnySlinger.Outbox.Options;
 using BunnySlinger.Outbox.Tests.Helpers;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
