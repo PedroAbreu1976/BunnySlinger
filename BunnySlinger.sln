@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BunnySlinger.Tests", "Bunny
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BunnySlinger.Rabbit.Tests", "BunnySlinger.Rabbit.Tests\BunnySlinger.Rabbit.Tests.csproj", "{A8ABA056-07D3-4243-839A-4ADBB875B95B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BunnySlinger.Outbox.Tests", "BunnySlinger.Outbox.Tests\BunnySlinger.Outbox.Tests.csproj", "{CD4E4636-6E53-4C3E-8CCD-DAC8D56DB24F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,10 @@ Global
 		{A8ABA056-07D3-4243-839A-4ADBB875B95B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8ABA056-07D3-4243-839A-4ADBB875B95B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A8ABA056-07D3-4243-839A-4ADBB875B95B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD4E4636-6E53-4C3E-8CCD-DAC8D56DB24F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD4E4636-6E53-4C3E-8CCD-DAC8D56DB24F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD4E4636-6E53-4C3E-8CCD-DAC8D56DB24F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD4E4636-6E53-4C3E-8CCD-DAC8D56DB24F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -90,6 +96,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{377CEE70-A629-452E-B5E5-6751F20BFD2D} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{A8ABA056-07D3-4243-839A-4ADBB875B95B} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{CD4E4636-6E53-4C3E-8CCD-DAC8D56DB24F} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1FBBC54B-1C80-467E-8346-77EEFCC0E9E1}
