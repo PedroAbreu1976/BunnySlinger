@@ -2,7 +2,7 @@
 
 namespace BunnySlinger.Outbox.Options;
 
-internal class BunnyOutboxOptionsOptions : IOptions<BunnyOutboxOptions>
+public class BunnyOutboxOptionsOptions : IOptions<BunnyOutboxOptions>
 {
 
     public BunnyOutboxOptionsOptions(BunnyOutboxOptions options)
