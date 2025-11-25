@@ -1,6 +1,7 @@
 ﻿using BunnySlinger;
 using BunnySlinger.Extensions;
 using BunnySlinger.Options;
+using BunnySlinger.Outbox;
 using BunnySlinger.Outbox.Extensions;
 using BunnySlinger.Outbox.Options;
 using BunnySlinger.Rabbit.Extensions;

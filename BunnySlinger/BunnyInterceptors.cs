@@ -1,7 +1,27 @@
 ﻿namespace BunnySlinger;
 
+/// <summary>
+/// Provides a mechanism to apply a chain of interceptors to the process of catching a bunny.
+/// </summary>
+/// <remarks>This class allows the execution of a sequence of interceptors, where each interceptor can perform
+/// custom logic before or after the main bunny-catching operation. Interceptors are applied in reverse order, with the
+/// last interceptor wrapping the main operation, and so on.</remarks>
+/// <param name="interceptors"></param>
 public class BunnyInterceptors(IEnumerable<IBunnyInterceptor> interceptors) {
-	public async Task<bool> OnBunnyCatch(IBunny bunny, Func<IBunny, Task<bool>> catcher, Type handlerType) {
+    /// <summary>
+	/// Executes the bunny-catching process, applying a chain of interceptors around the provided catcher function.
+	/// </summary>
+	/// <remarks>This method applies a series of interceptors to the bunny-catching process. Each interceptor has
+	/// the opportunity to perform custom logic before or after invoking the next step in the chain. If an interceptor
+	/// decides not to call the next step, the chain is terminated early, and the result of the interceptor is
+	/// returned.</remarks>
+	/// <param name="bunny">The bunny to be caught. This parameter cannot be <see langword="null"/>.</param>
+	/// <param name="catcher">The final function responsible for catching the bunny. This function is wrapped by the interceptors.</param>
+	/// <param name="handlerType">The type of the handler initiating the bunny-catching process. This parameter is used to provide context to the
+	/// interceptors.</param>
+	/// <returns>A task that represents the asynchronous operation. The task result is <see langword="true"/> if the bunny was
+	/// successfully caught; otherwise, <see langword="false"/>.</returns>
+    public async Task<bool> OnBunnyCatch(IBunny bunny, Func<IBunny, Task<bool>> catcher, Type handlerType) {
 		// 1. Get the relevant interceptors for this bunny type
 		var applicableInterceptors = GetInterceptors(bunny);
 

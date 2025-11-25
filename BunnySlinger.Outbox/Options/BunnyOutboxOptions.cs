@@ -1,5 +1,12 @@
 ﻿namespace BunnySlinger.Outbox.Options
 {
+    /// <summary>
+    /// Represents configuration options for the Bunny Outbox, which manages the dispatching of messages and handling of
+    /// failed or expired messages.
+    /// </summary>
+    /// <remarks>This class provides settings to control the behavior of the outbox processor, including the
+    /// frequency of message dispatch checks, retry limits for failed messages, and expiration policies for undelivered
+    /// messages.</remarks>
     public class BunnyOutboxOptions
     {
         /// <summary>
