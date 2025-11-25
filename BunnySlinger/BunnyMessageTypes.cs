@@ -8,7 +8,7 @@ namespace BunnySlinger;
 public class BunnyMessageTypes {
 
 	public BunnyMessageTypes(Assembly[] assemblies) {
-		MessageTypes = new ReadOnlyCollection<Type>(assemblies.GetMessageTypes());
+		MessageTypes = new ReadOnlyCollection<Type>(assemblies.GetBunnyTypes());
 	}
 	
 	public IEnumerable<Type> MessageTypes { get; }

@@ -7,7 +7,7 @@ namespace BunnySlinger;
 public class BunnyHandlerTypes {
 
 	public BunnyHandlerTypes(Assembly[] assemblies) {
-		HandlerTypes = new ReadOnlyDictionary<Type, Type>(assemblies.GetMessageHandlerTypes());
+		HandlerTypes = new ReadOnlyDictionary<Type, Type>(assemblies.GetBunnyHandlerTypes());
 	}
 	
 	public IReadOnlyDictionary<Type, Type> HandlerTypes { get; }

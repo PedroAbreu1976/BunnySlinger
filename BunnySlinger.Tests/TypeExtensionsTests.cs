@@ -11,7 +11,7 @@ namespace BunnySlinger.Tests
         public void GetMessageHandlerTypes_Assembly_ReturnsCorrectMapping()
         {
             var assembly = typeof(TestBunnyCatcher).Assembly;
-            var result = assembly.GetMessageHandlerTypes();
+            var result = assembly.GetBunnyHandlerTypes();
             Assert.Contains(typeof(TestBunnyCatcher), result.Keys);
             Assert.Equal(typeof(TestBunny), result[typeof(TestBunnyCatcher)]);
         }
@@ -20,7 +20,7 @@ namespace BunnySlinger.Tests
         public void GetMessageHandlerTypes_Assemblies_ReturnsCorrectMapping()
         {
             var assemblies = new[] { typeof(TestBunnyCatcher).Assembly };
-            var result = assemblies.GetMessageHandlerTypes();
+            var result = assemblies.GetBunnyHandlerTypes();
             Assert.Contains(typeof(TestBunnyCatcher), result.Keys);
             Assert.Equal(typeof(TestBunny), result[typeof(TestBunnyCatcher)]);
         }
@@ -29,7 +29,7 @@ namespace BunnySlinger.Tests
         public void GetMessageTypes_Assembly_ReturnsCorrectTypes()
         {
             var assembly = typeof(TestBunny).Assembly;
-            var result = assembly.GetMessageTypes();
+            var result = assembly.GetBunnyTypes();
             Assert.Contains(typeof(TestBunny), result);
             Assert.Contains(typeof(NonTestBunny), result);
             Assert.All(result, t => Assert.True(typeof(IBunny).IsAssignableFrom(t)));
@@ -39,7 +39,7 @@ namespace BunnySlinger.Tests
         public void GetMessageTypes_Assemblies_ReturnsCorrectTypes()
         {
             var assemblies = new[] { typeof(TestBunny).Assembly };
-            var result = assemblies.GetMessageTypes();
+            var result = assemblies.GetBunnyTypes();
             Assert.Contains(typeof(TestBunny), result);
             Assert.Contains(typeof(NonTestBunny), result);
             Assert.All(result, t => Assert.True(typeof(IBunny).IsAssignableFrom(t)));
@@ -49,7 +49,7 @@ namespace BunnySlinger.Tests
         public void GetInterceptorTypes_Assembly_ReturnsCorrectTypes()
         {
             var assembly = typeof(DummyInterceptor).Assembly;
-            var result = assembly.GetInterceptorTypes();
+            var result = assembly.GetBunnyInterceptorTypes();
             Assert.Contains(typeof(DummyInterceptor), result);
             Assert.Contains(typeof(DummyTypedInterceptor), result);
             Assert.All(result, t => Assert.True(typeof(IBunnyInterceptor).IsAssignableFrom(t)));
@@ -59,7 +59,7 @@ namespace BunnySlinger.Tests
         public void GetInterceptorTypes_Assemblies_ReturnsCorrectTypes()
         {
             var assemblies = new[] { typeof(DummyInterceptor).Assembly };
-            var result = assemblies.GetInterceptorTypes();
+            var result = assemblies.GetBunnyInterceptorTypes();
             Assert.Contains(typeof(DummyInterceptor), result);
             Assert.Contains(typeof(DummyTypedInterceptor), result);
             Assert.All(result, t => Assert.True(typeof(IBunnyInterceptor).IsAssignableFrom(t)));
