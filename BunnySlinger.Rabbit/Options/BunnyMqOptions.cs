@@ -2,9 +2,21 @@
 
 namespace BunnySlinger.Options;
 
+/// <summary>
+/// Represents configuration options for establishing and managing RabbitMQ connections.
+/// </summary>
+/// <remarks>This class provides a set of properties to configure various aspects of RabbitMQ connections,  such
+/// as connection timeouts, authentication credentials, TLS settings, and protocol-specific options.  It acts as a
+/// wrapper around the RabbitMQ <see cref="ConnectionFactory"/> to simplify configuration  and ensure consistency across
+/// connections.</remarks>
 public class BunnyMqOptions {
     private readonly ConnectionFactory _factory = new ConnectionFactory();
 
+    /// <summary>
+    /// Represents configuration options for a BunnyMQ connection.
+    /// </summary>
+    /// <remarks>This class provides options for configuring the BunnyMQ connection, including SSL
+    /// settings.</remarks>
     public BunnyMqOptions() {
 	    Ssl = new RabbitMqSslOption {
             ServerName = _factory.Ssl.ServerName,
@@ -15,6 +27,12 @@ public class BunnyMqOptions {
         };
     }
 
+    /// <summary>
+    /// Retrieves the configured connection factory instance.
+    /// </summary>
+    /// <remarks>The returned connection factory is pre-configured with the current SSL settings, including 
+    /// server name, acceptable policy errors, certificate path, SSL enablement, and version.</remarks>
+    /// <returns>An <see cref="IConnectionFactory"/> instance configured with the current SSL settings.</returns>
     public IConnectionFactory GetFactory() {
         _factory.Ssl.ServerName = Ssl.ServerName;
         _factory.Ssl.AcceptablePolicyErrors = Ssl.AcceptablePolicyErrors;
