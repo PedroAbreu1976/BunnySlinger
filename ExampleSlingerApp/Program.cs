@@ -20,9 +20,6 @@ builder.ConfigureServices((hostContext, services) => {
 
 var app = builder.Build();
 
-await app.StartBunnyObserver();
-
-
 
 var sender = app.Services.GetRequiredService<IBunnySling>();
 Console.WriteLine("----------------------------");
