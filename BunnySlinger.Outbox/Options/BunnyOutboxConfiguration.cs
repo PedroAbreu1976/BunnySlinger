@@ -7,7 +7,7 @@
     /// <remarks>This class provides settings to control the behavior of the outbox processor, including the
     /// frequency of message dispatch checks, retry limits for failed messages, and expiration policies for undelivered
     /// messages.</remarks>
-    public class BunnyOutboxOptions
+    public class BunnyOutboxConfiguration
     {
         /// <summary>
         /// Gets or sets the frequency in milliseconds at which the outbox processor checks for new messages to dispatch.

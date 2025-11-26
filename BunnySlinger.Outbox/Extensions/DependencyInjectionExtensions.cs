@@ -13,41 +13,19 @@ namespace BunnySlinger.Outbox.Extensions;
 /// injection container and to start the Bunny Outbox worker. The Bunny Outbox is designed to facilitate reliable
 /// message processing in applications using Entity Framework Core.</remarks>
 public static class DependencyInjectionExtensions {
-	/// <summary>
-	/// Adds Bunny Outbox services to the specified <see cref="IServiceCollection"/> with the provided options.
-	/// </summary>
-	/// <typeparam name="TDbContext">The type of the <see cref="DbContext"/> used by the application. This must derive from <see cref="DbContext"/>.</typeparam>
-	/// <param name="services">The <see cref="IServiceCollection"/> to which the Bunny Outbox services will be added.</param>
-	/// <param name="options">The configuration options for the Bunny Outbox. This parameter cannot be null.</param>
-	/// <returns>The updated <see cref="IServiceCollection"/> instance, enabling further chaining of service registrations.</returns>
-	public static IServiceCollection AddBunnyOutbox<TDbContext>(
-		this IServiceCollection services, BunnyOutboxOptions options) where TDbContext : DbContext {
-		services.AddSingleton<IOptions<BunnyOutboxOptions>>(sp => new BunnyOutboxOptionsOptions(options));
-		return services.AddBunnyOutboxCommonServices<TDbContext>();
-	}
-
-    /// <summary>
-    /// Adds the Bunny Outbox services to the specified <see cref="IServiceCollection"/>  for the given <typeparamref
-    /// name="TDbContext"/>. Make sure the options are set on appsettings or configuration provider.
-    /// </summary>
-    /// <remarks>This method configures the necessary options for Bunny Outbox and registers the common  services
-    /// required for its operation. It is intended to be used in the application's  dependency injection setup.</remarks>
-    /// <typeparam name="TDbContext">The type of the <see cref="DbContext"/> used to store outbox messages.</typeparam>
-    /// <param name="services">The <see cref="IServiceCollection"/> to which the Bunny Outbox services will be added.</param>
-    /// <returns>The updated <see cref="IServiceCollection"/> instance.</returns>
-    public static IServiceCollection AddBunnyOutbox<TDbContext>(this IServiceCollection services)
-		where TDbContext : DbContext {
-		services.ConfigureOptions<BunnyOutboxOptionsSetup>();
-		return services.AddBunnyOutboxCommonServices<TDbContext>();
-	}
-
-	private static IServiceCollection AddBunnyOutboxCommonServices<TDbContext>(this IServiceCollection services)
-		where TDbContext : DbContext {
+	public static IServiceCollection AddBunnyOutbox<TDbContext>(this IServiceCollection services, 
+		Action<BunnyOutboxConfiguration>? configuration = null)
+		where TDbContext : DbContext
+	{
+		services.ConfigureOptions<BunnyOutboxConfigurationSetup>();
+		if(configuration is not null) {
+			services.PostConfigure<BunnyOutboxConfiguration>(configuration);
+		}
 		services.AddScoped<IBunnyOutbox, BunnyOutbox<TDbContext>>();
 		services.AddScoped<IBunnyOutboxProcessor, BunnyOutboxProcessor<TDbContext>>();
 		services.AddHostedService<BunnyOutboxWorker>();
 		return services;
-	}
+    }
 
 	/// <summary>
 	/// Starts the Bunny Outbox worker associated with the specified host.

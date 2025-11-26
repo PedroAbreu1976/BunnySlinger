@@ -10,16 +10,12 @@ namespace BunnySlinger.Outbox.Tests.Helpers
 {
 
 	internal static class ServiceHelpers {
-		public static IServiceProvider CreateServices(BunnyOutboxOptions? options = null) {
+		public static IServiceProvider CreateServices(Action<BunnyOutboxConfiguration>? configuration = null) {
 			var services = new ServiceCollection();
-			if (options is null) {
-				var config = new ConfigurationBuilder().Build();
-				services.AddSingleton<IConfiguration>(config);
-				services.AddBunnyOutbox<TestDbContext>();
-			}
-			else {
-				services.AddBunnyOutbox<TestDbContext>(options);
-			}
+
+			var config = new ConfigurationBuilder().Build();
+			services.AddSingleton<IConfiguration>(config);
+			services.AddBunnyOutbox<TestDbContext>(configuration);
 
 			services.AddDbContext<TestDbContext>(o => { o.UseInMemoryDatabase("TestDatabase"); });
 			services.AddBunnyInMemory();

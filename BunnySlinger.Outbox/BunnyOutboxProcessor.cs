@@ -9,7 +9,7 @@ namespace BunnySlinger.Outbox;
 public class BunnyOutboxProcessor<TContext>(
 	TContext context,
 	IBunnySling bunnySling,
-	IOptions<BunnyOutboxOptions> options,
+	IOptions<BunnyOutboxConfiguration> options,
 	BunnyMessageTypes bunnyMessageTypes) : IBunnyOutboxProcessor where TContext : DbContext {
 	public async Task ProcessAsync(CancellationToken stoppingToken = default) {
 		var processedDbSet = context.GetBunnyProcessed();

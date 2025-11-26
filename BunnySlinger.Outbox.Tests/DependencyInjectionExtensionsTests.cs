@@ -12,12 +12,13 @@ namespace BunnySlinger.Outbox.Tests
         [Fact]
         public void AddBunnyOutbox_WithOptions_RegistersExpectedServices()
         {
-            var options = new BunnyOutboxOptions();
-            var provider = ServiceHelpers.CreateServices(options);
+ var provider = ServiceHelpers.CreateServices(options => {
+	            options.MaxRetryCount = 666;
+            });
 
-            var opts = provider.GetService<IOptions<BunnyOutboxOptions>>();
+            var opts = provider.GetService<IOptions<BunnyOutboxConfiguration>>();
             Assert.NotNull(opts);
-            Assert.Equal(options, opts.Value);
+            Assert.Equal(666, opts.Value.MaxRetryCount);
 
             Assert.NotNull(provider.GetService<IBunnyOutbox>());
             Assert.NotNull(provider.GetService<IBunnyOutboxProcessor>());
@@ -32,7 +33,7 @@ namespace BunnySlinger.Outbox.Tests
             Assert.NotNull(provider.GetService<IBunnyOutbox>());
             Assert.NotNull(provider.GetService<IBunnyOutboxProcessor>());
             Assert.NotNull(provider.GetService<IHostedService>());
-            Assert.NotNull(provider.GetService<IOptions<BunnyOutboxOptions>>());
+            Assert.NotNull(provider.GetService<IOptions<BunnyOutboxConfiguration>>());
         }
 
         [Fact]

@@ -7,7 +7,7 @@ namespace BunnySlinger.Outbox
 {
     public class BunnyOutboxWorker(
         IServiceScopeFactory serviceScopeFactory,
-        IOptions<BunnyOutboxOptions> options) : BackgroundService
+        IOptions<BunnyOutboxConfiguration> options) : BackgroundService
     {
 	    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {

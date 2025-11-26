@@ -12,9 +12,9 @@ namespace BunnySlinger.Outbox.Tests
         private static BunnyOutboxProcessor<TestDbContext> CreateProcessor(
             TestDbContext context,
             IBunnySling bunnySling,
-            BunnyOutboxOptions? options = null)
+            BunnyOutboxConfiguration? options = null)
         {
-            var opts = new BunnyOutboxOptionsOptions(options ?? new BunnyOutboxOptions { MaxRetryCount = 3, ExpireOlderThan = 3600 });
+            var opts = new BunnyOutboxConfigurationOptions(options ?? new BunnyOutboxConfiguration { MaxRetryCount = 3, ExpireOlderThan = 3600 });
             var messageTypes = new BunnyMessageTypes(new[] { typeof(TestBunny).Assembly });
             return new BunnyOutboxProcessor<TestDbContext>(context, bunnySling, opts, messageTypes);
         }
@@ -72,7 +72,7 @@ namespace BunnySlinger.Outbox.Tests
 
             var bunnySlingMock = new Mock<IBunnySling>();
             bunnySlingMock.Setup(x => x.SlingBunnyAsync(It.IsAny<IBunny>(), It.IsAny<CancellationToken>())).ThrowsAsync(new Exception("Dispatch failed"));
-            var processor = CreateProcessor(context, bunnySlingMock.Object, new BunnyOutboxOptions { MaxRetryCount = 3, ExpireOlderThan = 3600 });
+            var processor = CreateProcessor(context, bunnySlingMock.Object, new BunnyOutboxConfiguration { MaxRetryCount = 3, ExpireOlderThan = 3600 });
 
             await processor.ProcessAsync();
 
@@ -88,7 +88,7 @@ namespace BunnySlinger.Outbox.Tests
         {
             var bunnySlingMock = new Mock<IBunnySling>();
             var context = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-            var processor = CreateProcessor(context, bunnySlingMock.Object, new BunnyOutboxOptions { MaxRetryCount = 2, ExpireOlderThan = 3600 });
+            var processor = CreateProcessor(context, bunnySlingMock.Object, new BunnyOutboxConfiguration { MaxRetryCount = 2, ExpireOlderThan = 3600 });
             var item = new BunnyOutboxItem { Id = Guid.NewGuid(), CreatedAt = DateTime.UtcNow, Type = "t", Payload = "p", RetryCount = 3 };
             var result = processor.GetType().GetMethod("AddToFailed", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!.Invoke(processor, new object[] { item });
             Assert.True((bool)result);
@@ -99,7 +99,7 @@ namespace BunnySlinger.Outbox.Tests
         {
             var bunnySlingMock = new Mock<IBunnySling>();
             var context = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-            var processor = CreateProcessor(context, bunnySlingMock.Object, new BunnyOutboxOptions { MaxRetryCount = 10, ExpireOlderThan = 60 });
+            var processor = CreateProcessor(context, bunnySlingMock.Object, new BunnyOutboxConfiguration { MaxRetryCount = 10, ExpireOlderThan = 60 });
             var item = new BunnyOutboxItem { Id = Guid.NewGuid(), CreatedAt = DateTime.UtcNow.AddMinutes(-120), Type = "t", Payload = "p", RetryCount = 1 };
             var result = processor.GetType().GetMethod("AddToFailed", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!.Invoke(processor, new object[] { item });
             Assert.True((bool)result);
@@ -110,7 +110,7 @@ namespace BunnySlinger.Outbox.Tests
         {
             var bunnySlingMock = new Mock<IBunnySling>();
             var context = new TestDbContext(new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
-            var processor = CreateProcessor(context, bunnySlingMock.Object, new BunnyOutboxOptions { MaxRetryCount = 10, ExpireOlderThan = 60 });
+            var processor = CreateProcessor(context, bunnySlingMock.Object, new BunnyOutboxConfiguration { MaxRetryCount = 10, ExpireOlderThan = 60 });
             var item = new BunnyOutboxItem { Id = Guid.NewGuid(), CreatedAt = DateTime.UtcNow, Type = "t", Payload = "p", RetryCount = 1 };
             var result = processor.GetType().GetMethod("AddToFailed", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!.Invoke(processor, new object[] { item });
             Assert.False((bool)result);

@@ -27,7 +27,7 @@ builder.ConfigureServices((hostContext, services) => {
     });
 
     services.AddBunnies(typeof(TestBunny).Assembly);
-    services.AddBunnyOutbox<AppDbContext>(new BunnyOutboxOptions());
+    services.AddBunnyOutbox<AppDbContext>();
 });
 
 var app = builder.Build();

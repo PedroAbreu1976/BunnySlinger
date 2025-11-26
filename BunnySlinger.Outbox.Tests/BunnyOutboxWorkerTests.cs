@@ -11,7 +11,7 @@ namespace BunnySlinger.Outbox.Tests
         public async Task ExecuteAsync_CallsProcessAsyncAndRespectsFrequency()
         {
             var helper = new BunnyOutboxWorkerTestsHelper();
-            var options = new OptionsWrapper<BunnyOutboxOptions>(new BunnyOutboxOptions { ProcessorFrequency = 10 });
+            var options = new OptionsWrapper<BunnyOutboxConfiguration>(new BunnyOutboxConfiguration { ProcessorFrequency = 10 });
             var worker = new BunnyOutboxWorker(helper.ServiceScopeFactory, options);
 
             using var cts = new CancellationTokenSource();
@@ -29,7 +29,7 @@ namespace BunnySlinger.Outbox.Tests
         {
             // Arrange
             var helper = new BunnyOutboxWorkerTestsHelper();
-            var options = new OptionsWrapper<BunnyOutboxOptions>(new BunnyOutboxOptions { ProcessorFrequency = 10 });
+            var options = new OptionsWrapper<BunnyOutboxConfiguration>(new BunnyOutboxConfiguration { ProcessorFrequency = 10 });
             var worker = new BunnyOutboxWorker(helper.ServiceScopeFactory, options);
 
             using var cts = new CancellationTokenSource();

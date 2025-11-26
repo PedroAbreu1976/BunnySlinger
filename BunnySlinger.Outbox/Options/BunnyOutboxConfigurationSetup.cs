@@ -3,11 +3,11 @@ using Microsoft.Extensions.Options;
 
 namespace BunnySlinger.Outbox.Options;
 
-public class BunnyOutboxOptionsSetup(IConfiguration configuration) : IConfigureOptions<BunnyOutboxOptions>
+public class BunnyOutboxConfigurationSetup(IConfiguration configuration) : IConfigureOptions<BunnyOutboxConfiguration>
 {
 	private const string SectionName = "BunnyOutbox";
 
-	public void Configure(BunnyOutboxOptions options)
+	public void Configure(BunnyOutboxConfiguration options)
 	{
 		configuration
 			.GetSection(SectionName)
