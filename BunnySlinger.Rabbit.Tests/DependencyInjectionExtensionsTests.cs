@@ -13,14 +13,20 @@ namespace BunnySlinger.Rabbit.Tests
         public void AddBunnyMq_WithOptions_RegistersExpectedServices()
         {
             var services = new ServiceCollection();
-            var options = new BunnyMqOptions();
-            services.AddBunnyMq(options);
+            // Add minimal configuration for BunnyMqOptionsSetup
+            var config = new ConfigurationBuilder().Build();
+            services.AddSingleton<IConfiguration>(config);
+            services.AddBunnyMq(o => {
+                o.HostName = "testhost";
+                o.Port = 1000;
+            });
             var provider = services.BuildServiceProvider();
 
             // IOptions<BunnyMqOptions> should be registered as singleton
-            var opts = provider.GetService<IOptions<BunnyMqOptions>>();
+            var opts = provider.GetService<IOptions<BunnyMqConfiguration>>();
             Assert.NotNull(opts);
-            Assert.Equal(options, opts.Value);
+            Assert.Equal("testhost", opts.Value.HostName);
+            Assert.Equal(1000, opts.Value.Port);
 
             // IChannelProvider should be registered as singleton
             var channelProvider1 = provider.GetService<IChannelProvider>();

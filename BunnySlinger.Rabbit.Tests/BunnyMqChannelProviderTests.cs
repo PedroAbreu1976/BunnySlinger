@@ -10,18 +10,18 @@ namespace BunnySlinger.Rabbit.Tests
 {
     public class BunnyMqChannelProviderTests
     {
-        private readonly Mock<IOptions<BunnyMqOptions>> _optionsMock;
+        private readonly Mock<IOptions<BunnyMqConfiguration>> _optionsMock;
         private readonly Mock<IConnectionFactory> _factoryMock;
         private readonly Mock<IConnection> _connectionMock;
         private readonly Mock<IConnectionFactoryProvider> _connectionFactoryProviderMock;
         private readonly Mock<IChannel> _channelMock;
         private readonly BunnyMqChannelProvider _provider;
-        private readonly BunnyMqOptions _options;
+        private readonly BunnyMqConfiguration _options;
 
         public BunnyMqChannelProviderTests()
         {
-            _options = new BunnyMqOptions { HostName = "localhost", Port = 5672 };
-            _optionsMock = new Mock<IOptions<BunnyMqOptions>>();
+            _options = new BunnyMqConfiguration { HostName = "localhost", Port = 5672 };
+            _optionsMock = new Mock<IOptions<BunnyMqConfiguration>>();
             _connectionFactoryProviderMock = new Mock<IConnectionFactoryProvider>();
             _factoryMock = new Mock<IConnectionFactory>();
             _connectionFactoryProviderMock.Setup(o => o.GetFactory()).Returns(_factoryMock.Object);

@@ -3,11 +3,11 @@ using Microsoft.Extensions.Options;
 
 namespace BunnySlinger.Options;
 
-public class BunnyMqOptionsSetup(IConfiguration configuration) : IConfigureOptions<BunnyMqOptions>
+public class BunnyMqConfigurationSetup(IConfiguration configuration) : IConfigureOptions<BunnyMqConfiguration>
 {
 	private const string SectionName = "BunnyMq";
 
-	public void Configure(BunnyMqOptions options)
+	public void Configure(BunnyMqConfiguration options)
 	{
 		configuration
 			.GetSection(SectionName)

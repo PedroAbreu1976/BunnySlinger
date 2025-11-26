@@ -11,12 +11,10 @@ var builder = Host.CreateDefaultBuilder();
 
 
 builder.ConfigureServices((hostContext, services) => {
-    services.AddBunnyMq(
-		new BunnyMqOptions
-		{
-			HostName = "localhost",
-			Port = 5672
-		});
+    services.AddBunnyMq(o => {
+			o.HostName = "localhost";
+			o.Port = 5672;
+    });
 	services.AddBunnies(typeof(TestBunny).Assembly);
 });
 

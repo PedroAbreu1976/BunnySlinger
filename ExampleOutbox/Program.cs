@@ -21,12 +21,10 @@ builder.ConfigureServices((hostContext, services) => {
         options.UseInMemoryDatabase("MyDatabase");
     });
 
-    services.AddBunnyMq(
-        new BunnyMqOptions
-        {
-            HostName = "localhost",
-            Port = 5672
-        });
+    services.AddBunnyMq(c => {
+	    c.HostName = "localhost";
+	    c.Port = 5672;
+    });
 
     services.AddBunnies(typeof(TestBunny).Assembly);
     services.AddBunnyOutbox<AppDbContext>(new BunnyOutboxOptions());

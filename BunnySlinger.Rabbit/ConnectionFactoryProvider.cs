@@ -5,7 +5,7 @@ using RabbitMQ.Client;
 
 namespace BunnySlinger.Rabbit;
 
-public class ConnectionFactoryProvider(IOptions<BunnyMqOptions> bunnyMqOptions) : IConnectionFactoryProvider {
+public class ConnectionFactoryProvider(IOptions<BunnyMqConfiguration> bunnyMqOptions) : IConnectionFactoryProvider {
 	public IConnectionFactory GetFactory() {
 		return bunnyMqOptions.Value.GetFactory();
     }

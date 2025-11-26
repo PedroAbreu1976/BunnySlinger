@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace BunnySlinger.Rabbit.Tests
 {
-    public class BunnyMqOptionsSetupTests
+    public class BunnyMqConfigurationSetupTests
     {
         [Fact]
         public void Configure_BindsConfigurationSectionToOptions()
@@ -20,8 +20,8 @@ namespace BunnySlinger.Rabbit.Tests
             var configuration = new ConfigurationBuilder()
                 .AddInMemoryCollection(configData)
                 .Build();
-            var setup = new BunnyMqOptionsSetup(configuration);
-            var options = new BunnyMqOptions();
+            var setup = new BunnyMqConfigurationSetup(configuration);
+            var options = new BunnyMqConfiguration();
 
             // Act
             setup.Configure(options);
