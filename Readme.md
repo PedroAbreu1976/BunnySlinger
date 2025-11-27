@@ -51,6 +51,13 @@ public class TestBunnyCatcher : IBunnyHandler<TestBunny>
 }
 ```
 
+### 4. Sling a Bunny (Publisher)
+
+```csharp
+var sender = app.Services.GetRequiredService<IBunnySling>();
+await sender.SlingBunnyAsync(new TestBunny { Message = "Hello, Bunny!" });
+```
+
 ---
 
 ## In-Memory Usage
@@ -69,20 +76,73 @@ builder.ConfigureServices((hostContext, services) => {
 
 var app = builder.Build();
 await app.StartBunnyObserver();
-```
-
-### Sling a Bunny (In-Memory)
-
-```csharp
-var sender = app.Services.GetRequiredService<IBunnySling>();
-await sender.SlingBunnyAsync(new TestBunny { Message = "Hello, Bunny!" });
-```
-
-### Run the Application
-
-```csharp
 await app.RunAsync();
 ```
+
+### End-to-End In-Memory Example
+
+This example demonstrates a complete in-memory BunnySlinger setup with a custom interceptor that refuses bunnies with all-caps messages, a custom bunny type, and a catcher. The app interactively slings bunnies until an empty message is entered.
+
+```csharp
+var builder = Host.CreateDefaultBuilder();
+builder.ConfigureServices((hostContext, services) => {
+    services.AddBunnyInMemory();
+    services.AddBunnies(typeof(TestBunny).Assembly);
+    services.AddBunnyHandlers(typeof(TestBunnyCatcher).Assembly);
+    services.AddBunnyInterceptors(typeof(NoShoutTestBunnyInterceptor).Assembly);
+});
+
+var app = builder.Build();
+await app.StartBunnyObserver();
+
+var sender = app.Services.GetRequiredService<IBunnySling>();
+Console.WriteLine("----------------------------");
+Console.WriteLine("----- In-Memory Example ----");
+Console.WriteLine("If all caps, bunny will be refused");
+Console.WriteLine("Start throwing and catching bunnies:");
+Console.WriteLine("Empty message exits the app");
+Console.WriteLine("----------------------------");
+var msg = Console.ReadLine();
+while (!string.IsNullOrWhiteSpace(msg))
+{
+    await sender.SlingBunnyAsync(new TestBunny { Message = msg });
+    msg = Console.ReadLine();
+    if (string.IsNullOrWhiteSpace(msg)) {
+        break;
+    }
+}
+await app.RunAsync();
+
+public class TestBunnyCatcher(ILogger<TestBunnyCatcher> logger) : IBunnyCatcher<TestBunny>
+{
+    public Task<bool> CatchBunnyAsync(TestBunny bunny) {
+        Console.WriteLine($"Received by {nameof(TestBunnyCatcher)}: {bunny.Message}");
+        return Task.FromResult(true);
+    }
+}
+
+public class TestBunny: IBunny
+{
+    public string Message { get; set; }
+}
+
+public class NoShoutTestBunnyInterceptor(ILogger<NoShoutTestBunnyInterceptor> logger) : IBunnyInterceptor<TestBunny>
+{
+    public Task<bool> OnBunnyCatch(TestBunny bunny, Func<IBunny, Task<bool>> catcher, Type handlerType) {
+        if (bunny.Message.ToUpper() == bunny.Message) {
+            logger.LogWarning($"Bunny refused because it carries a shouting message: {bunny.Message}");
+            return Task.FromResult(true);
+        }
+        return catcher(bunny);
+    }
+}
+```
+
+**How it works:**
+- The app registers BunnySlinger for in-memory transport, a custom bunny type, a catcher, and an interceptor.
+- The interceptor (`NoShoutTestBunnyInterceptor`) refuses bunnies whose message is all uppercase.
+- The catcher (`TestBunnyCatcher`) prints received bunny messages.
+- The app reads messages from the console and slings them as bunnies until an empty message is entered.
 
 ---
 
@@ -91,6 +151,10 @@ await app.RunAsync();
 > **Note:** The NuGet package **BunnySlinger.Rabbit** is required for RabbitMQ transport. Install it in your project before proceeding.
 
 ### Register BunnySlinger (RabbitMQ Publisher)
+
+You can configure BunnySlinger RabbitMQ options directly in code, or inject them from your appsettings.json configuration.
+
+#### Option 1: Configure in Code
 
 ```csharp
 var builder = Host.CreateDefaultBuilder();
@@ -105,22 +169,22 @@ builder.ConfigureServices((hostContext, services) => {
 
 var app = builder.Build();
 await app.StartBunnyObserver();
-```
-
-### Sling a Bunny (RabbitMQ Publisher)
-
-```csharp
-var sender = app.Services.GetRequiredService<IBunnySling>();
-await sender.SlingBunnyAsync(new TestBunny { Message = "Hello, Bunny!" });
-```
-
-### Run the Publisher Application
-
-```csharp
 await app.RunAsync();
 ```
 
----
+#### Option 2: Configure via appsettings.json
+
+Add the following section to your appsettings.json:
+
+```json
+{
+  "BunnyMq": {
+    "HostName": "localhost",
+    "UserName": "guest",
+    "Port": 5672
+  }
+}
+```
 
 ### Register BunnySlinger (RabbitMQ Subscriber)
 
@@ -128,19 +192,19 @@ await app.RunAsync();
 var builder = Host.CreateDefaultBuilder();
 
 builder.ConfigureServices((hostContext, services) => {
-    services.AddBunnyMq(c => {
-        c.HostName = "localhost";
-        c.Port = 5672;
-    });
-    services.AddBunnies(typeof(TestBunny).Assembly);
-    services.AddBunnyHandlers(typeof(TestBunnyCatcher).Assembly);
-    services.AddBunnyInterceptors(typeof(TestBunnyCatcher).Assembly);
+    services.AddBunnyMq(); //configures from appsettings.json
+    services.AddBunnyHandlers(typeof(TestBunny).Assembly);
 });
 
 var app = builder.Build();
 await app.StartBunnyObserver();
 await app.RunAsync();
 ```
+
+
+
+#### Catch a Bunny (Subscriber)
+Implement the `TestBunnyCatcher` as shown earlier to handle incoming bunnies.
 
 ---
 
