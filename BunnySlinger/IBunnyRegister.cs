@@ -15,16 +15,16 @@ public interface IBunnyRegister : IDisposable
 public class BunnyRegister : IBunnyRegister
 {
     private readonly IBunnyBroker _broker;
-    private readonly IServiceProvider _serviceProvider;
+    private readonly IServiceScopeFactory _serviceScopeFactory;
     private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
     private readonly List<Type> _bunnyTypes = [];
     private readonly Dictionary<Type, Type> _handlerBunnyTypes = [];
     private bool _isConnected = false;
 
-    public BunnyRegister(IBunnyBroker broker, IServiceProvider serviceProvider)
+    public BunnyRegister(IBunnyBroker broker, IServiceScopeFactory serviceScopeFactory)
     {
         _broker = broker;
-        _serviceProvider = serviceProvider;
+        _serviceScopeFactory = serviceScopeFactory;
 
         _broker.ConnectionBrokenAsync += Broker_OnConnectionBrokenAsync;
         _broker.ConnectionEstablishedAsync += Broker_ConnectionEstablishedAsync;
@@ -88,7 +88,7 @@ public class BunnyRegister : IBunnyRegister
 
     private async Task<bool> DispachtBunnyAsync(Type handlerType, IBunny bunny)
     {
-        using var scope = _serviceProvider.CreateScope();
+        using var scope = _serviceScopeFactory.CreateScope();
         var handler = scope.ServiceProvider.GetRequiredService(handlerType) as IBunnyCatcher;
         var interceptors = scope.ServiceProvider.GetRequiredService<BunnyInterceptors>();
         return await interceptors.OnBunnyCatch(bunny, handler!.CatchBunnyAsync, handlerType);
