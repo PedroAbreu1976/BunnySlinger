@@ -28,13 +28,14 @@ public static class DependencyInjectionExtensions
 	/// <param name="services">The <see cref="IServiceCollection"/> to which the Bunny services will be added.</param>
 	/// <returns>The updated <see cref="IServiceCollection"/> instance.</returns>
 	public static IServiceCollection AddBunnyInMemory(this IServiceCollection services) {
-
-		services.AddSingleton<BunnyInMemoryQueue>();
+		services.AddSingleton<IBunnyBroker, BunnyInMemoryBroker>();
+		services.AddSingleton<IBunnyRegister, BunnyRegister>();
+        services.AddSingleton<BunnyInMemoryQueue>();
         services.AddHostedService<ChannelPublisherWorker>();
-        services.AddSingleton<IBunnySling, BunnyInMemorySling>();
+        services.AddSingleton<IBunnySling, BunnySling>();
         services.AddScoped<BunnyInterceptors>();
 
-        services.AddSingleton<IBunnyRegister, BunnyInMemoryRegister>();
+        //services.AddSingleton<IBunnyRegister, BunnyInMemoryRegister>();
 
         return services;
 	}
@@ -109,8 +110,10 @@ public static class DependencyInjectionExtensions
 		var consumer = host.Services.GetRequiredService<IBunnyRegister>();
 		var bunnyMessageTypes = host.Services.GetService<BunnyMessageTypes>();
 		var bunnyHandlerTypes = host.Services.GetService<BunnyHandlerTypes>();
-		var channelPublisherWorker =
-			host.Services.GetServices<IHostedService>().OfType<ChannelPublisherWorker>().FirstOrDefault();
+		var channelPublisherWorker = host.Services
+			.GetServices<IHostedService>()
+			.OfType<ChannelPublisherWorker>()
+			.FirstOrDefault();
 
         bunnyMessageTypes?.MessageTypes.ForEach(x => consumer.AddBunny(x));
 		bunnyHandlerTypes?.HandlerTypes.Keys.ForEach(x => consumer.AddBunnyCatcher(x, bunnyHandlerTypes.HandlerTypes[x]));

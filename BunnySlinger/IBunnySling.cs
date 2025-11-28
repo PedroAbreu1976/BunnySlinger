@@ -19,4 +19,10 @@
         /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
 	    Task SlingBunnyAsync<TBunny>(TBunny bunny, CancellationToken ct = default) where TBunny : IBunny;
     }
+
+    public class BunnySling(IBunnyBroker broker) : IBunnySling {
+        public async Task SlingBunnyAsync<TBunny>(TBunny bunny, CancellationToken ct = default) where TBunny : IBunny {
+            await broker.SlingBunnyAsync(bunny, ct);
+        }
+    }
 }

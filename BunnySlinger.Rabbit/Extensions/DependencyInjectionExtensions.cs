@@ -1,6 +1,6 @@
-﻿using BunnySlinger.Options;
+﻿using BunnySlinger.InMemory;
+using BunnySlinger.Options;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 
 namespace BunnySlinger.Rabbit.Extensions;
 
@@ -20,10 +20,11 @@ public static class DependencyInjectionExtensions
 		}
 
 		services.AddSingleton<IChannelProvider, BunnyMqChannelProvider>();
-		services.AddSingleton<IBunnySling, BunnyMqSling>();
+		services.AddSingleton<IBunnySling, BunnySling>();
 		services.AddScoped<BunnyInterceptors>();
-		services.AddSingleton<IBunnyRegister, BunnyMqRegister>();
-		services.AddSingleton<IConnectionFactoryProvider, ConnectionFactoryProvider>();
+		services.AddSingleton<IBunnyBroker, BunnyMqBroker>();
+		services.AddSingleton<IBunnyRegister, BunnyRegister>();
+        services.AddSingleton<IConnectionFactoryProvider, ConnectionFactoryProvider>();
 
 		return services;
     }

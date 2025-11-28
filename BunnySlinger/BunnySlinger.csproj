@@ -6,10 +6,16 @@
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Title>BunnySlinger</Title>
 		<PackageProjectUrl>https://github.com/PedroAbreu1976/BunnySlinger</PackageProjectUrl>
-		<PackageReadmeFile>Readme.md</PackageReadmeFile>
 		<RepositoryUrl>https://github.com/PedroAbreu1976/BunnySlinger</RepositoryUrl>
 		<PackageTags>rabbitmq;pub/sub;broker;messaging;outbox;idempontency</PackageTags>
+		<PackageReadmeFile>Readme.md</PackageReadmeFile>
 	</PropertyGroup>
+	<ItemGroup>
+	  <None Include="..\Readme.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.10" />
 	</ItemGroup>

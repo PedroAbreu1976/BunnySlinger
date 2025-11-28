@@ -2,7 +2,7 @@
 
 namespace BunnySlinger.InMemory;
 
-public class BunnyInMemoryQueue(int capacity = 100)
+public class BunnyInMemoryQueue(int capacity = 100): IDisposable
 {
 	private readonly Channel<IBunny> _queue =
 		Channel.CreateBounded<IBunny>(new BoundedChannelOptions(capacity)
@@ -25,6 +25,16 @@ public class BunnyInMemoryQueue(int capacity = 100)
 			return args.Handled;
         }
 		return true;
+	}
+
+	public void ClearEvents() {
+		BunnyDispatched = null;
+    }
+
+	/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+	public void Dispose() {
+		ClearEvents();
+
 	}
 }
 
